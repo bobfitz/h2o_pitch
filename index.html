@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Water Pollution Shiny App</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Water Pollution Shiny App">
+  <meta name="author" content="Bob Fitzgerald">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/prettify/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="libraries/widgets/bootstrap/css/bootstrap.css"></link>
+<link rel=stylesheet href="libraries/widgets/interactive/css/aceeditor.css"></link>
+<link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Water Pollution Shiny App</h1>
+    <h2>Massachusetts and Rhode Island Water Quality</h2>
+    <p>Bob Fitzgerald<br/>Coursera Student</p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <hgroup>
+    <h2>How Does It Work?</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Select a chemical parameter<br></li>
+<li>Select a year between 1986 and 2012<br></li>
+<li>Press Submit<br></li>
+</ul>
+
+<h2>What Does It Do?</h2>
+
+<ul>
+<li>The data is searched</li>
+<li>The results are calculated showing you how many records it found.</li>
+<li>A bar graph is plotted to show relative levels by location</li>
+<li>A Google Map is plotted showing the locations.</li>
+<li>The tool tip in the Google Map is calculated to show 
+location name and value. </li>
+<li>A data table is shown and the percentage each value represents
+is calculated and shown in the percent column.</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-2" style="background:;">
+  <hgroup>
+    <h2>About The Data And Data Processing</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li><p>The data the application uses can be found at: </p>
+
+<h3>NCCOS - National Centers for Ocean and Coastal Science.</h3></li>
+<li><p><a href="http://egisws02.nos.noaa.gov/nsandt/index.html#">http://egisws02.nos.noaa.gov/nsandt/index.html#</a>  </p></li>
+<li><p>It was downloaded with the <em>Chemical data set and all parameters for MA and RI</em>.  </p></li>
+<li><p>The data came in two CSV files downloaded.   </p></li>
+<li><p>The data was read into, two separate data frames.</p></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-3" style="background:;">
+  <hgroup>
+    <h2>About The Data And Data Processing (continued)</h2>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">x &lt;-read.delim(&quot;nccos_chem_data_RI_ALL.txt&quot;, stringsAsFactors=FALSE)
+y &lt;-read.delim(&quot;nccos_chem_data_MA_ALL.txt&quot;, stringsAsFactors=FALSE)  
+</code></pre>
+
+<ul>
+<li>Post loading RI data was at 8945 records and 16 variables.<br></li>
+<li>Post loading MA data was at 42487 records and 16 variables.<br></li>
+<li>Next we create the location data for google maps and remove NA values and combine them.</li>
+</ul>
+
+<pre><code class="r">x$Loc &lt;- paste(x$Lat_DD, x$Lon_DD, sep=&quot;:&quot;)
+x&lt;- x[!is.na(x$Method) , ]
+y$Loc &lt;- paste(y$Lat_DD, y$Lon_DD, sep=&quot;:&quot;)
+y&lt;- y[!is.na(y$Method) , ]
+xy &lt;- rbind(x,y)
+</code></pre>
+
+<ul>
+<li>The consolidated data set is 47755 records and 17 variables.</li>
+</ul>
+
+<pre><code class="r">saveRDS(xy, file=&#39;nccos_chem_data_rima.rds&#39;)
+</code></pre>
+
+<ul>
+<li>Saved as an RDS for use by the application.</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-4" style="background:;">
+  <hgroup>
+    <h2>About The Data In The Application</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>On startup the data is read into data frame.</li>
+</ul>
+
+<pre><code class="r">x&lt;-readRDS(&quot;nccos_chem_data_rima.rds&quot;)
+paste(&quot;The years range from&quot;, min(x$Fiscal.Year), &quot;to&quot;, max(x$Fiscal.Year), &quot;and it has&quot;, length((unique(x$Parameter))), &quot;chemicals&quot;)
+</code></pre>
+
+<pre><code>## [1] &quot;The years range from 1986 to 2012 and it has 285 chemicals&quot;
+</code></pre>
+
+<h2>For more..  <a href="https://bobfitz.shinyapps.io/Final">https://bobfitz.shinyapps.io/Final</a></h2>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='How Does It Work?'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='About The Data And Data Processing'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='About The Data And Data Processing (continued)'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='About The Data In The Application'>
+         4
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  <script src="libraries/widgets/bootstrap/js/bootstrap.min.js"></script>
+<script src="libraries/widgets/bootstrap/js/bootbox.min.js"></script>
+<script src="libraries/widgets/interactive/js/ace/js/ace.js"></script>
+<script src="libraries/widgets/interactive/js/opencpu-0.5.js"></script>
+<script src="libraries/widgets/interactive/js/interactive.js"></script>
+
+  <script>  
+  $(function (){ 
+    $("#example").popover(); 
+    $("[rel='tooltip']").tooltip(); 
+  });  
+  </script>  
+  <script src="shared/shiny.js" type="text/javascript"></script>
+  <script src="shared/slider/js/jquery.slider.min.js"></script>
+  <script src="shared/bootstrap/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="shared/slider/css/jquery.slider.min.css"></link>
+  
+  <!-- Google Prettify -->
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+  <script src='libraries/highlighters/prettify/js/lang-r.js'></script>
+  <script>
+    var pres = document.getElementsByTagName("pre");
+    for (var i=0; i < pres.length; ++i) {
+      pres[i].className = "prettyprint linenums";
+    }
+    prettyPrint();
+  </script>
+  <!-- End Google Prettify --> 
+  </html>
