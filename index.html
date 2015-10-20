@@ -84,6 +84,7 @@ is calculated and shown in the percent column.</li>
 <li><p>It was downloaded with the <em>Chemical data set and all parameters for MA and RI</em>.  </p></li>
 <li><p>The data came in two CSV files downloaded.   </p></li>
 <li><p>The data was read into, two separate data frames.</p></li>
+<li><p>The years range from 1986 to 2012 and it has 285 chemicals covering 63 locations in MA and RI</p></li>
 </ul>
 
   </article>
@@ -129,21 +130,14 @@ xy &lt;- rbind(x,y)
 
 <slide class="" id="slide-4" style="background:;">
   <hgroup>
-    <h2>About The Data In The Application</h2>
+    <h2>About The Application</h2>
   </hgroup>
   <article data-timings="">
     <ul>
-<li>On startup the data is read into data frame.</li>
+<li><p>Example Plot
+<img src="assets/fig/unnamed-chunk-2-1.png" alt="plot of chunk unnamed-chunk-2"> </p></li>
+<li><p>For more..  <a href="https://bobfitz.shinyapps.io/Final">https://bobfitz.shinyapps.io/Final</a> </p></li>
 </ul>
-
-<pre><code class="r">x&lt;-readRDS(&quot;nccos_chem_data_rima.rds&quot;)
-paste(&quot;The years range from&quot;, min(x$Fiscal.Year), &quot;to&quot;, max(x$Fiscal.Year), &quot;and it has&quot;, length((unique(x$Parameter))), &quot;chemicals&quot;)
-</code></pre>
-
-<pre><code>## [1] &quot;The years range from 1986 to 2012 and it has 285 chemicals&quot;
-</code></pre>
-
-<h2>For more..  <a href="https://bobfitz.shinyapps.io/Final">https://bobfitz.shinyapps.io/Final</a></h2>
 
   </article>
   <!-- Presenter Notes -->
@@ -173,7 +167,7 @@ paste(&quot;The years range from&quot;, min(x$Fiscal.Year), &quot;to&quot;, max(
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=4 title='About The Data In The Application'>
+        data-slide=4 title='About The Application'>
          4
       </a>
     </li>

@@ -35,6 +35,10 @@ is calculated and shown in the percent column.
 * It was downloaded with the *Chemical data set and all parameters for MA and RI*.  
 * The data came in two CSV files downloaded.   
 * The data was read into, two separate data frames.
+```{r  echo=FALSE, fig.height=100}
+x<-xy
+```
+* The years range from `r min(x$Fiscal.Year)` to `r max(x$Fiscal.Year)` and it has `r length((unique(x$Parameter)))` chemicals covering 63 locations in MA and RI
 
 ---  
 
@@ -61,14 +65,18 @@ saveRDS(xy, file='nccos_chem_data_rima.rds')
 * Saved as an RDS for use by the application.
 
 --- 
-## About The Data In The Application
 
-* On startup the data is read into data frame.
-
-```{r  }
-x<-readRDS("nccos_chem_data_rima.rds")
-paste("The years range from", min(x$Fiscal.Year), "to", max(x$Fiscal.Year), "and it has", length((unique(x$Parameter))), "chemicals")
+## About The Application
+* Example Plot
+```{r echo=FALSE}
+g <- ggplot(data=x[x$Parameter=="Mercury" & x$Fiscal.Year==2011,], aes(x=Specific.Location, y=Value)) + 
+                                                         geom_bar(stat="identity", width=.5, fill="blue") + 
+                                                         xlab("Specific Location - ") + 
+                                                         ylab("micrograms per dry gram")+ggtitle("2011 Mercury Levels")+
+                                                         theme(plot.title = element_text(lineheight=.8, face="bold"), axis.text.x  = element_text(angle=45, vjust=0.5, size=16))
+plot(g)
 ```
-## For more..  https://bobfitz.shinyapps.io/Final 
+
+* For more..  https://bobfitz.shinyapps.io/Final 
 
 

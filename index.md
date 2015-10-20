@@ -36,6 +36,8 @@ is calculated and shown in the percent column.
 * The data came in two CSV files downloaded.   
 * The data was read into, two separate data frames.
 
+* The years range from 1986 to 2012 and it has 285 chemicals covering 63 locations in MA and RI
+
 ---  
 
 ## About The Data And Data Processing (continued)
@@ -63,19 +65,11 @@ saveRDS(xy, file='nccos_chem_data_rima.rds')
 * Saved as an RDS for use by the application.
 
 --- 
-## About The Data In The Application
 
-* On startup the data is read into data frame.
+## About The Application
+* Example Plot
+![plot of chunk unnamed-chunk-2](assets/fig/unnamed-chunk-2-1.png) 
 
-
-```r
-x<-readRDS("nccos_chem_data_rima.rds")
-paste("The years range from", min(x$Fiscal.Year), "to", max(x$Fiscal.Year), "and it has", length((unique(x$Parameter))), "chemicals")
-```
-
-```
-## [1] "The years range from 1986 to 2012 and it has 285 chemicals"
-```
-## For more..  https://bobfitz.shinyapps.io/Final 
+* For more..  https://bobfitz.shinyapps.io/Final 
 
 
